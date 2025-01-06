@@ -29,7 +29,7 @@ if game.PlaceId == 6839171747 then
     Title.BackgroundTransparency = 1
     Title.Size = UDim2.new(1, 0, 1, 0)
     Title.Font = Enum.Font.SourceSansBold
-    Title.Text = "MSlolcat v1.1 | DOORS (Game)"
+    Title.Text = "MSlolcat v3 | DOORS (Game)"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Left
