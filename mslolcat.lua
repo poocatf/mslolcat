@@ -1,185 +1,236 @@
-local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local TitleFrame = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
+local repo = 'https://raw.githubusercontent.com/deividcomsono/LinoriaLib/main/'
 
-ScreenGui.Name = "MSlolcat"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(1, -250, 1, -150)
-MainFrame.Size = UDim2.new(0, 250, 0, 25)
-MainFrame.ClipsDescendants = true
+local scriptName = "MSLOLCAT - Lobby"
+local Window = Library:CreateWindow({
+    Title = scriptName,
+    Center = true,
+    AutoShow = true,
+    Resizable = true,
+    NotifySide = "Right",
+    ShowCustomCursor = true,
+    TabPadding = 2,
+    MenuFadeTime = 0
+})
 
-TitleFrame.Name = "TitleFrame"
-TitleFrame.Parent = MainFrame
-TitleFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-TitleFrame.BorderSizePixel = 0
-TitleFrame.Size = UDim2.new(1, 0, 0, 25)
+Library.ShowCustomCursor = false
 
-Title.Name = "Title"
-Title.Parent = TitleFrame
-Title.BackgroundTransparency = 1
-Title.Size = UDim2.new(1, 0, 1, 0)
-Title.Font = Enum.Font.SourceSansBold
-Title.Text = "MSlolcat v3 | Lobby Editor "
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 20
-Title.TextXAlignment = Enum.TextXAlignment.Left
+local Tabs = {
+    Main = Window:AddTab('Main'),
+    ['UI Settings'] = Window:AddTab('UI Settings'),
+}
 
-local Buttons = {}
+local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Utilities')
 
-local function createButton(name, position, text, link)
-    local Button = Instance.new("TextButton")
-    Button.Name = name
-    Button.Parent = MainFrame
-    Button.BackgroundTransparency = 1
-    Button.BorderSizePixel = 0
-    Button.Position = position
-    Button.Size = UDim2.new(0, 230, 0, 20)
-    Button.Font = Enum.Font.SourceSans
-    Button.Text = text
-    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Button.TextSize = 16
-    Button.TextXAlignment = Enum.TextXAlignment.Left
-    Button.Visible = false
-    Buttons[#Buttons + 1] = Button
-    
-    if link then
-        Button.MouseButton1Click:Connect(function()
-            setclipboard(link)
-            print("Link copied to clipboard: " .. link)
-        end)
-    end
-    
-    return Button
-end
-
-local WalkspeedButton = createButton("Walkspeed", UDim2.new(0, 10, 0, 35), "Walkspeed")
-local FullbrightButton = createButton("Fullbright", UDim2.new(0, 10, 0, 55), "Fullbright")
-local HotelButton = createButton("Hotel", UDim2.new(0, 10, 0, 75), "Hotel")
-local BackdoorButton = createButton("Backdoor", UDim2.new(0, 10, 0, 95), "Backdoor")
-local CutbarriersButton = createButton("Cutbarriers", UDim2.new(0, 10, 0, 115), "Cutbarriers")
-local HideMSlolButton = createButton("Hidemslol", UDim2.new(0, 10, 0, 135), "Hidemslol")
-
-local DiscordButton = createButton("Discord", UDim2.new(0, 10, 0, 155), "Discord", "https://discord.gg/ZJR8Mdb54n")
-local TwitterButton = createButton("Twitter", UDim2.new(0, 10, 0, 175), "X/Twitter", "https://x.com/pooca2t")
-
-Title.MouseEnter:Connect(function()
-    MainFrame.Size = UDim2.new(0, 250, 0, 250)
-    for _, button in ipairs(Buttons) do
-        button.Visible = true
-    end
-end)
-
-MainFrame.MouseLeave:Connect(function()
-    wait(0.2)
-    if not MainFrame:IsMouseOver() then
-        MainFrame.Size = UDim2.new(0, 250, 0, 25)
-        for _, button in ipairs(Buttons) do
-            button.Visible = false
+LeftGroupBox:AddSlider('WalkspeedSlider', {
+    Text = 'Set Walkspeed',
+    Default = 16,
+    Min = 0,
+    Max = 100,
+    Rounding = 0,
+    Callback = function(Value)
+        if Toggles.WalkspeedToggle.Value then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
         end
     end
-end)
+})
 
-HideMSlolButton.MouseButton1Click:Connect(function()
-    ScreenGui.Enabled = false
-end)
-
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.Semicolon then
-        ScreenGui.Enabled = true
-    end
-end)
-
-local WalkspeedGui = Instance.new("Frame")
-WalkspeedGui.Name = "WalkspeedGui"
-WalkspeedGui.Parent = ScreenGui
-WalkspeedGui.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-WalkspeedGui.BorderSizePixel = 0
-WalkspeedGui.Position = UDim2.new(1, -500, 1, -150)
-WalkspeedGui.Size = UDim2.new(0, 250, 0, 100)
-WalkspeedGui.Visible = false
-
-local WalkspeedTitle = Instance.new("TextLabel")
-WalkspeedTitle.Parent = WalkspeedGui
-WalkspeedTitle.BackgroundTransparency = 1
-WalkspeedTitle.Size = UDim2.new(1, 0, 0, 20)
-WalkspeedTitle.Font = Enum.Font.SourceSansBold
-WalkspeedTitle.Text = "Set Walkspeed"
-WalkspeedTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-WalkspeedTitle.TextSize = 18
-
-local WalkspeedTextbox = Instance.new("TextBox")
-WalkspeedTextbox.Parent = WalkspeedGui
-WalkspeedTextbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-WalkspeedTextbox.BorderSizePixel = 0
-WalkspeedTextbox.Position = UDim2.new(0, 10, 0, 40)
-WalkspeedTextbox.Size = UDim2.new(1, -20, 0, 25)
-WalkspeedTextbox.Font = Enum.Font.SourceSans
-WalkspeedTextbox.Text = ""
-WalkspeedTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
-WalkspeedTextbox.TextSize = 16
-WalkspeedTextbox.PlaceholderText = "Enter speed"
-
-WalkspeedButton.MouseButton1Click:Connect(function()
-    WalkspeedGui.Visible = not WalkspeedGui.Visible
-end)
-
-WalkspeedTextbox.FocusLost:Connect(function(enterPressed)
-    if enterPressed then
-        local speed = tonumber(WalkspeedTextbox.Text)
-        if speed then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+LeftGroupBox:AddToggle('WalkspeedToggle', {
+    Text = 'Enable Walkspeed',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Options.WalkspeedSlider.Value
+        else
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
         end
     end
-end)
+})
 
-FullbrightButton.MouseButton1Click:Connect(function()
-    game.Lighting.Ambient = Color3.new(1, 1, 1)
-end)
-
-HotelButton.MouseButton1Click:Connect(function()
-    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(-1010, 5, 685))
-end)
-
-BackdoorButton.MouseButton1Click:Connect(function()
-    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(-1105, 6, 656))
-end)
-
-CutbarriersButton.MouseButton1Click:Connect(function()
-    for _, part in pairs(workspace:GetDescendants()) do
-        if part:IsA("BasePart") and part.Name == "PlayerBarrier" then
-            part:Destroy()
+LeftGroupBox:AddToggle('FullbrightToggle', {
+    Text = 'Fullbright',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game.Lighting.Ambient = Color3.new(1, 1, 1)
+        else
+            game.Lighting.Ambient = Color3.new(0, 0, 0)
         end
     end
-end)
+})
 
-local function modifyBadgeForPlayer(player)
-    local playerName = player.Name
-    local playerUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("NameUI" .. playerName)
-    
-    if playerUI then
-        local stuff = playerUI:FindFirstChild("Stuff")
-        if stuff then
-            local textBadge = stuff:FindFirstChild("TextBadge")
-            if textBadge then
-                textBadge.Text = "Special Badge"
-            end
-
-            local iconBadge = stuff:FindFirstChild("IconBadge")
-            if iconBadge then
-                iconBadge.Image = "rbxassetid://107738231127754"
+LeftGroupBox:AddToggle('NoclipToggle', {
+    Text = 'Noclip',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService('RunService').Stepped:Connect(function()
+                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if part:IsA('BasePart') then
+                        part.CanCollide = false
+                    end
+                end
+            end)
+        else
+            for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if part:IsA('BasePart') then
+                    part.CanCollide = true
+                end
             end
         end
     end
+})
+
+local SniperGroupbox = Tabs.Main:AddLeftGroupbox("Sniper")
+
+SniperGroupbox:AddToggle("ElevatorSniper", {
+    Text = "Elevator Sniper",
+    Default = false
+})
+
+local playerDropdown = SniperGroupbox:AddDropdown("ElevatorSniperTarget", {
+    SpecialType = "Player",
+    Multi = false,
+    Text = "Target"
+})
+
+playerDropdown:OnChanged(function()
+    local players = {}
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer then
+            table.insert(players, player.Name)
+        end
+    end
+    playerDropdown:SetValues(players)
+end)
+
+game:GetService('RunService').RenderStepped:Connect(function()
+    if Toggles.ElevatorSniper.Value and Options.ElevatorSniperTarget.Value then
+        local targetCharacter = workspace:FindFirstChild(Options.ElevatorSniperTarget.Value)
+        if not targetCharacter then return end
+
+        local targetElevatorID = targetCharacter:GetAttribute("InGameElevator")
+        local currentElevatorID = game.Players.LocalPlayer.Character:GetAttribute("InGameElevator")
+        if currentElevatorID == targetElevatorID then return end
+
+        if targetElevatorID ~= nil then    
+            local targetElevator = workspace.Lobby.LobbyElevators:FindFirstChild("LobbyElevator-" .. targetElevatorID) 
+
+            if not targetElevator then
+                for _, elevator in pairs(workspace.Lobby.LobbyElevators:GetChildren()) do
+                    if elevator.Name:match("LobbyElevator") then
+                        targetElevator = elevator
+                    end
+                end
+            end
+
+            if targetElevator then
+                local remotesFolder = game:GetService("ReplicatedStorage"):FindFirstChild("RemotesFolder")
+                if remotesFolder then
+                    local elevatorJoin = remotesFolder:FindFirstChild("ElevatorJoin")
+                    if elevatorJoin then
+                        elevatorJoin:FireServer(targetElevator)
+                    end
+                end
+            end
+        elseif currentElevatorID ~= nil then
+            local remotesFolder = game:GetService("ReplicatedStorage"):FindFirstChild("RemotesFolder")
+            if remotesFolder then
+                local elevatorExit = remotesFolder:FindFirstChild("ElevatorExit")
+                if elevatorExit then
+                    elevatorExit:FireServer()
+                end
+            end
+        end
+    end
+end)
+
+local CreditsGroupBox = Tabs.Main:AddRightGroupbox("Credits")
+
+CreditsGroupBox:AddLabel("Script by: Aquabeary & lolcat.")
+CreditsGroupBox:AddButton("Copy Discord Link", function()
+    setclipboard("https://discord.gg/jw8G89KDMQ")
+    Library:Notify("Discord link copied to clipboard!", 5)
+end)
+
+local AchievementsGroupbox = Tabs.Main:AddLeftGroupbox("Achievements")
+
+local function showAchievement(title, desc, reason, imageId)
+    if not imageId then return end
+
+    local holder = game.Players.LocalPlayer.PlayerGui:FindFirstChild("MainUI")
+    if not holder or not holder:FindFirstChild("AchievementsHolder") then return end
+    holder = holder.AchievementsHolder
+    local originalAchievement = holder:FindFirstChild("Achievement")
+    if not originalAchievement then return end
+
+    local newAchievement = originalAchievement:Clone()
+    newAchievement.Name = "Achievement_" .. #holder:GetChildren()
+    newAchievement.Parent = holder
+
+    newAchievement.Frame.Details.Title.Text = title
+    newAchievement.Frame.Details.Desc.Text = desc
+    newAchievement.Frame.Details.Reason.Text = reason
+    newAchievement.Frame.ImageLabel.Image = "rbxassetid://" .. imageId
+    newAchievement.Sound:Play()
+
+    newAchievement.Size = UDim2.new(0, 0, 0, 0)
+    newAchievement.Frame.Position = UDim2.new(1.1, 0, 0, 0)
+    newAchievement.Visible = true
+
+    newAchievement:TweenSize(UDim2.new(1, 0, 0.2, 0), Enum.EasingDirection.In, Enum.EasingStyle.Quad, 0.8, true)
+    task.wait(0.8)
+    newAchievement.Frame:TweenPosition(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
+
+    game:GetService("TweenService"):Create(newAchievement.Frame.Glow, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        ImageTransparency = 1
+    }):Play()
+
+    task.wait(4)
+
+    newAchievement.Frame:TweenPosition(UDim2.new(1.1, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Quad, 0.5, true)
+    task.wait(0.5)
+    newAchievement:TweenSize(UDim2.new(1, 0, -0.1, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.5, true)
+    task.wait(0.5)
+
+    newAchievement:Destroy()
 end
 
-game.Players.PlayerAdded:Connect(function(player)
-    modifyBadgeForPlayer(player)
-end)
+local achievements = {
+    QATester = {
+        Title = "QA Tester",
+        Desc = "Get back to work! I said get back to work!",
+        Reason = "Test stuff.",
+        ImageId = 12309073114
+    },
+    A1000 = {
+        Title = "A-1000",
+        Desc = "I can't feel my legs.",
+        Reason = "Reach the end of The Rooms.",
+        ImageId = 12307813676
+    }
+}
+
+for name, achievement in pairs(achievements) do
+    AchievementsGroupbox:AddButton(achievement.Title, function()
+        showAchievement(achievement.Title, achievement.Desc, achievement.Reason, achievement.ImageId)
+    end)
+end
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+Library.ToggleKeybind = Options.MenuKeybind
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+ThemeManager:SetFolder('MSLOLCAT')
+SaveManager:SetFolder('MSLOLCAT/Lobby')
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
