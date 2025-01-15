@@ -9,7 +9,7 @@ Simple and powerful hub for roblox DOORS. (Open source!)
 
 ## Usage
 ```lua
-loadstring(game:HttpGet('https://raw.githubusercontent.com/poocatf/mslolcat/refs/heads/main/loader.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/poocatf/mslolcat/main/loader.lua'))()
 ```
 
 ## Contact 
