@@ -150,7 +150,7 @@ end)
 
 local CreditsGroupBox = Tabs.Main:AddRightGroupbox("Credits")
 
-CreditsGroupBox:AddLabel("Script by: Aquabeary & lolcat.")
+CreditsGroupBox:AddLabel("Script by: Aquabeary & poocat.")
 CreditsGroupBox:AddButton("Copy Discord Link", function()
     setclipboard("https://discord.gg/jw8G89KDMQ")
     Library:Notify("Discord link copied to clipboard!", 5)
