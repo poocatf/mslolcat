@@ -1,15 +1,27 @@
-# Hello!
+# MSLOLCAT
 
-You are here from my MSLOLCAT script..... right?
-yeah ok bye!
-yeah this is open source
+Simple and powerful hub for roblox DOORS. (Open source!)
 
-# shout out:
-upio
-gunnercow
-poocat(me!)
-carson
-danny
-swagspecter
-solara
-doors roblox
+## Supported Places
+- Lobby
+- Floor 1
+- Pre-Hotel
+
+## Usage
+```lua
+loadstring(game:HttpGet('https://raw.githubusercontent.com/poocatf/mslolcat/refs/heads/main/loader.lua'))()
+```
+
+## Contact 
+Discord: https://discord.gg/jw8G89KDMQ
+
+## Special Thanks!
+- poocat (Owner)
+- Aquabeary (Co-Owner)
+
+- upio
+- gunnercow
+- swagspecter
+- solara (executor!)
+- doors (the game)
+- roblox (the real game)
